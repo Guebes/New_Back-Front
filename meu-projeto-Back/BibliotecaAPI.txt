@@ -1,0 +1,4 @@
+O EXPRESS cria o servidor; 
+o CORS permite que seu frontend converse com o backend;
+o JSONWEBTOKEN fará a autenticação;
+BCRYPT vai encriptar as senhas no banco.

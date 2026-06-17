@@ -1,0 +1,25 @@
+Failed to compile.
+
+Module not found: Error: Can't resolve './Home' in 'C:\Users\nome\OneDrive\Desktop\Repositorio\2026\UTF\Web\React\enviar\trabalho\meu-projeto\src'
+ERROR in ./src/App.js 6:0-26
+Module not found: Error: Can't resolve './Home' in 'C:\Users\nome\OneDrive\Desktop\Repositorio\2026\UTF\Web\React\enviar\trabalho\meu-projeto\src'
+
+ERROR in ./src/App.js 7:0-28
+Module not found: Error: Can't resolve './Sobre' in 'C:\Users\nome\OneDrive\Desktop\Repositorio\2026\UTF\Web\React\enviar\trabalho\meu-projeto\src'
+
+ERROR in ./src/App.js 8:0-28
+Module not found: Error: Can't resolve './Login' in 'C:\Users\nome\OneDrive\Desktop\Repositorio\2026\UTF\Web\React\enviar\trabalho\meu-projeto\src'
+
+ERROR in ./src/App.js 9:0-34
+Module not found: Error: Can't resolve './Cadastro' in 'C:\Users\nome\OneDrive\Desktop\Repositorio\2026\UTF\Web\React\enviar\trabalho\meu-projeto\src'
+
+ERROR in ./src/App.js 10:0-28
+Module not found: Error: Can't resolve './Admin' in 'C:\Users\nome\OneDrive\Desktop\Repositorio\2026\UTF\Web\React\enviar\trabalho\meu-projeto\src'
+
+ERROR in ./src/App.js 11:0-32
+Module not found: Error: Can't resolve './Estoque' in 'C:\Users\nome\OneDrive\Desktop\Repositorio\2026\UTF\Web\React\enviar\trabalho\meu-projeto\src'
+
+ERROR in ./src/App.js 12:0-32
+Module not found: Error: Can't resolve './Contato' in 'C:\Users\nome\OneDrive\Desktop\Repositorio\2026\UTF\Web\React\enviar\trabalho\meu-projeto\src'
+
+webpack compiled with 7 errors
