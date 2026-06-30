@@ -1,22 +1,39 @@
-datasource db {
-  provider = "sqlite"
-}
-
 generator client {
   provider = "prisma-client-js"
 }
 
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
 model Usuario {
-  id    Int    @id @default(autoincrement())
-  nome  String
-  email String @unique
-  senha String
-  cargo String @default("Operador") 
+  id            Int             @id @default(autoincrement())
+  nome          String
+  email         String          @unique
+  senha         String
+  cargo         String          @default("Operador")
+  movimentacoes Movimentacao[]
 }
 
 model Produto {
-  id    Int    @id @default(autoincrement())
-  nome  String
-  qtd   Int
-  preco String 
+  id            Int             @id @default(autoincrement())
+  nome          String
+  qtd           Int
+  preco         Float
+  movimentacoes Movimentacao[]
+}
+
+model Movimentacao {
+  id         Int      @id @default(autoincrement())
+  tipo       String
+  quantidade Int
+  motivo     String
+  createdAt  DateTime @default(now())
+
+  produtoId  Int
+  usuarioId  Int
+
+  produto Produto @relation(fields: [produtoId], references: [id])
+  usuario Usuario @relation(fields: [usuarioId], references: [id])
 }

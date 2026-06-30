@@ -8,6 +8,7 @@ import Cadastro from './Abas/Cadastro';
 import Admin from './Abas/Admin';
 import Estoque from './Abas/Estoque';
 import Contato from './Abas/Contato';
+import PrivateRoute from './componentes/RotaPrivada';
 
 function App() {
   return (
@@ -17,7 +18,7 @@ function App() {
         <Link to="/sobre" style={{ marginRight: '15px' }}>Sobre</Link>
         <Link to="/cadastro" style={{ marginRight: '15px' }}>Cadastrar-se</Link>
         <Link to="/login" style={{ marginRight: '15px' }}>Login</Link>
-        <Link to="/estoque" style={{ fontWeight: 'bold', color: '#28a745' }}>Estoque de Produtos</Link>
+        <Link to="/estoque" style={{ fontWeight: 'bold', color: '#28a745' }}>Estoque</Link>
       </nav>
 
       <Routes>
@@ -25,9 +26,33 @@ function App() {
         <Route path="/sobre" element={<Sobre />} />
         <Route path="/cadastro" element={<Cadastro />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/admin" element={<Admin />} />
-        <Route path="/estoque" element={<Estoque />} />
-        <Route path="/contato" element={<Contato />} />
+
+        <Route
+          path="/admin"
+          element={
+            <PrivateRoute>
+              <Admin />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/estoque"
+          element={
+            <PrivateRoute>
+              <Estoque />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/contato"
+          element={
+            <PrivateRoute cargosPermitidos={['Administrador']}>
+              <Contato />
+            </PrivateRoute>
+          }
+        />
       </Routes>
     </Router>
   );

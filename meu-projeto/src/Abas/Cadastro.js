@@ -7,52 +7,67 @@ function Cadastro() {
     const [cargo, setCargo] = useState('Operador');
     const [mensagem, setMensagem] = useState('');
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        setMensagem('');
 
-        const dadosUsuario = { nome, email, senha, cargo };
+        try {
+            const resposta = await fetch('http://localhost:3001/usuarios', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    nome,
+                    email,
+                    senha,
+                    cargo
+                })
+            });
 
-        fetch('http://localhost:1111/usuarios', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(dadosUsuario),
-        })
-        .then((resposta) => {
-            if (!resposta.ok) throw new Error();
-            return resposta.json();
-        })
-        .then((dados) => {
-            setMensagem(dados.mensagem || "Usuário cadastrado com sucesso!");
-            setNome(''); setEmail(''); setSenha(''); setCargo('Operador');
-        })
-        .catch(() => {
-            console.log("Back-end offline. Simulando salvamento local.");
-            setMensagem(`🎉 [Modo Local] Usuário "${nome}" cadastrado com sucesso!`);
-            setNome(''); setEmail(''); setSenha(''); setCargo('Operador');
-        });
+            const dados = await resposta.json();
+
+            if (!resposta.ok) {
+                throw new Error(dados.erro);
+            }
+
+            setMensagem(dados.mensagem);
+
+            setNome('');
+            setEmail('');
+            setSenha('');
+            setCargo('Operador');
+        } catch (error) {
+            setMensagem(error.message);
+        }
     };
 
     return (
-        <div style={{ fontFamily: 'sans-serif', padding: '20px' }}>
-            <h2>Criar Nova Conta</h2>
-            {mensagem && <p style={{ color: 'green' }}><b>{mensagem}</b></p>}
+        <div style={{ padding: '20px' }}>
+            <h2>Cadastrar Usuário</h2>
+
+            {mensagem && <p>{mensagem}</p>}
 
             <form onSubmit={handleSubmit}>
-                <input type="text" placeholder="Nome Completo" value={nome} onChange={(e) => setNome(e.target.value)} required /><br /><br />
-                <input type="email" placeholder="E-mail" value={email} onChange={(e) => setEmail(e.target.value)} required /><br /><br />
-                <input type="password" placeholder="Senha" value={senha} onChange={(e) => setSenha(e.target.value)} required /><br /><br />
-                
-                <label>Cargo: </label>
-                <select value={cargo} onChange={(e) => setCargo(e.target.value)}>
-                    <option value="Operador">Operador</option>
-                    <option value="Gerente">Gerente</option>
-                    <option value="Administrador">Administrador</option>
-                </select><br /><br />
+                <input value={nome} onChange={(e) => setNome(e.target.value)} placeholder="Nome" required />
+                <br /><br />
 
+                <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" required />
+                <br /><br />
+
+                <input type="password" value={senha} onChange={(e) => setSenha(e.target.value)} placeholder="Senha" required />
+                <br /><br />
+
+                <select value={cargo} onChange={(e) => setCargo(e.target.value)}>
+                    <option>Operador</option>
+                    <option>Gerente</option>
+                    <option>Administrador</option>
+                </select>
+
+                <br /><br />
                 <button type="submit">Cadastrar</button>
             </form>
         </div>
     );
 }
+
 export default Cadastro;

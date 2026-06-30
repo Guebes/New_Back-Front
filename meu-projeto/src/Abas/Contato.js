@@ -4,37 +4,60 @@ function Contato() {
     const [usuarios, setUsuarios] = useState([]);
     const [carregando, setCarregando] = useState(true);
 
+    const token = localStorage.getItem('token');
+
     useEffect(() => {
-        fetch('http://localhost:1111/usuarios')
-            .then((res) => { if (!res.ok) throw new Error(); return res.json(); })
-            .then((dados) => { setUsuarios(dados); setCarregando(false); })
-            .catch(() => {
-                setUsuarios([
-                    { id: 1, nome: "Carlos Silva", email: "carlos@email.com", cargo: "Administrador" },
-                    { id: 2, nome: "Ana Souza", email: "ana@email.com", cargo: "Gerente" }
-                ]);
+        const carregarUsuarios = async () => {
+            try {
+                const resposta = await fetch('http://localhost:3001/usuarios', {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+
+                const dados = await resposta.json();
+                setUsuarios(dados);
+            } catch (error) {
+                console.error(error);
+            } finally {
                 setCarregando(false);
-            });
+            }
+        };
+
+        carregarUsuarios();
     }, []);
 
-    if (carregando) return <p style={{ padding: '20px' }}>Carregando usuários...</p>;
+    if (carregando) {
+        return <p>Carregando usuários...</p>;
+    }
 
     return (
-        <div style={{ fontFamily: 'sans-serif', padding: '20px' }}>
+        <div style={{ padding: '20px' }}>
             <h2>Lista de Usuários</h2>
-            <table border="1" cellPadding="10" style={{ borderCollapse: 'collapse', width: '100%', maxWidth: '500px' }}>
+
+            <table border="1" cellPadding="10">
                 <thead>
-                    <tr style={{ backgroundColor: '#f2f2f2' }}>
-                        <th>ID</th><th>Nome</th><th>E-mail</th><th>Cargo</th>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Email</th>
+                        <th>Cargo</th>
                     </tr>
                 </thead>
+
                 <tbody>
-                    {usuarios.map(u => (
-                        <tr key={u.id}><td>{u.id}</td><td>{u.nome}</td><td>{u.email}</td><td>{u.cargo}</td></tr>
+                    {usuarios.map((u) => (
+                        <tr key={u.id}>
+                            <td>{u.id}</td>
+                            <td>{u.nome}</td>
+                            <td>{u.email}</td>
+                            <td>{u.cargo}</td>
+                        </tr>
                     ))}
                 </tbody>
             </table>
         </div>
     );
 }
+
 export default Contato;
