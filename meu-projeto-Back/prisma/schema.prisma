@@ -8,16 +8,16 @@ datasource db {
 }
 
 model Usuario {
-  id            Int             @id @default(autoincrement())
+  id            Int            @id @default(autoincrement())
   nome          String
-  email         String          @unique
+  email         String         @unique
   senha         String
-  cargo         String          @default("Operador")
+  cargo         String         @default("Operador")
   movimentacoes Movimentacao[]
 }
 
 model Produto {
-  id            Int             @id @default(autoincrement())
+  id            Int            @id @default(autoincrement())
   nome          String
   qtd           Int
   preco         Float
@@ -30,10 +30,8 @@ model Movimentacao {
   quantidade Int
   motivo     String
   createdAt  DateTime @default(now())
-
   produtoId  Int
   usuarioId  Int
-
-  produto Produto @relation(fields: [produtoId], references: [id])
-  usuario Usuario @relation(fields: [usuarioId], references: [id])
+  usuario    Usuario  @relation(fields: [usuarioId], references: [id])
+  produto    Produto  @relation(fields: [produtoId], references: [id])
 }

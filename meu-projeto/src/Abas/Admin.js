@@ -1,39 +1,79 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 function Admin() {
-    const navigate = useNavigate();
 
-    const logout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('cargo');
-        navigate('/login');
-    };
+    const usuario =
+        JSON.parse(
+            localStorage.getItem(
+                'usuario'
+            )
+        );
+
+    function logout() {
+
+        localStorage.clear();
+
+        window.location =
+            '/login';
+
+    }
 
     return (
-        <div style={{ padding: '20px' }}>
-            <h1>Painel Admin</h1>
 
-            <p>Escolha uma opção:</p>
+        <div
+            style={{
+                padding: '20px'
+            }}
+        >
 
-            <Link to="/contato">
-                <button>Ver Usuários</button>
-            </Link>
+            <h1>
+                Painel Administrativo
+            </h1>
 
-            <Link to="/estoque">
-                <button style={{ marginLeft: '10px' }}>
-                    Ver Estoque
-                </button>
-            </Link>
+            {
+                usuario &&
+                (
+                    <h3>
+                        Bem-vindo,
+                        {' '}
+                        {usuario.nome}
+                    </h3>
+                )
+            }
+
+            <hr />
+
+            <p>
+                <Link to="/contato">
+                    Usuários
+                </Link>
+            </p>
+
+            <p>
+                <Link to="/estoque">
+                    Estoque
+                </Link>
+            </p>
+
+            <p>
+                <Link to="/movimentacao">
+                    Movimentações
+                </Link>
+            </p>
+
+            <br />
 
             <button
                 onClick={logout}
-                style={{ marginLeft: '10px' }}
             >
-                Logout
+                Sair
             </button>
+
         </div>
+
     );
+
 }
 
 export default Admin;

@@ -1,47 +1,82 @@
+/* =========================
+   LISTAR PRODUTOS
+========================= */
 async function listar(prisma) {
-    return prisma.produto.findMany();
+
+    return await prisma.produto.findMany({
+        orderBy: {
+            id: 'asc'
+        }
+    });
+
 }
 
+/* =========================
+   CRIAR PRODUTO
+========================= */
 async function criar(dados, prisma) {
-    const { nome, qtd, preco } = dados;
 
-    return prisma.produto.create({
+    return await prisma.produto.create({
+
         data: {
-            nome,
-            qtd,
-            preco
+
+            nome: dados.nome,
+
+            qtd: Number(dados.qtd),
+
+            preco: Number(dados.preco)
+
         }
+
     });
+
 }
 
+/* =========================
+   ATUALIZAR PRODUTO
+========================= */
 async function atualizar(id, dados, prisma) {
-    const produtoId = parseInt(id);
 
-    return prisma.produto.update({
+    return await prisma.produto.update({
+
         where: {
-            id: produtoId
+            id: parseInt(id)
         },
-        data: dados
+
+        data: {
+
+            nome: dados.nome,
+
+            qtd: Number(dados.qtd),
+
+            preco: Number(dados.preco)
+
+        }
+
     });
+
 }
 
+/* =========================
+   REMOVER PRODUTO
+========================= */
 async function remover(id, prisma) {
-    const produtoId = parseInt(id);
 
-    await prisma.produto.delete({
+    return await prisma.produto.delete({
+
         where: {
-            id: produtoId
+            id: parseInt(id)
         }
+
     });
 
-    return {
-        mensagem: 'Produto removido'
-    };
 }
 
 module.exports = {
+
     listar,
     criar,
     atualizar,
     remover
+
 };

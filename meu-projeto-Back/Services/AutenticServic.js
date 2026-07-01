@@ -2,42 +2,103 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 async function login(dados, prisma) {
-    const { email, senha } = dados;
 
-    const usuario = await prisma.usuario.findUnique({
-        where: { email }
-    });
+    const {
+        email,
+        senha
+    } = dados;
+
+    /* =========================
+       BUSCA USUÁRIO
+    ========================= */
+    const usuario =
+        await prisma.usuario.findUnique({
+
+            where: {
+                email
+            }
+
+        });
 
     if (!usuario) {
-        throw new Error('Usuário não encontrado');
+
+        throw new Error(
+            'Usuário não encontrado'
+        );
+
     }
 
-    const senhaCorreta = await bcrypt.compare(
-        senha,
-        usuario.senha
-    );
+    /* =========================
+       VALIDA SENHA
+    ========================= */
+    const senhaCorreta =
+        await bcrypt.compare(
+
+            senha,
+
+            usuario.senha
+
+        );
 
     if (!senhaCorreta) {
-        throw new Error('Senha inválida');
+
+        throw new Error(
+            'Senha inválida'
+        );
+
     }
 
-    const token = jwt.sign(
-        {
-            id: usuario.id,
-            cargo: usuario.cargo
-        },
-        process.env.JWT_SECRET,
-        { expiresIn: '8h' }
-    );
+    /* =========================
+       GERA JWT
+    ========================= */
+    const token =
+        jwt.sign(
 
+            {
+
+                id: usuario.id,
+
+                nome: usuario.nome,
+
+                email: usuario.email,
+
+                cargo: usuario.cargo
+
+            },
+
+            process.env.JWT_SECRET,
+
+            {
+                expiresIn: '8h'
+            }
+
+        );
+
+    /* =========================
+       RETORNA LOGIN
+    ========================= */
     return {
+
         token,
+
         usuario: {
+
             id: usuario.id,
+
             nome: usuario.nome,
+
+            email: usuario.email,
+
             cargo: usuario.cargo
+
         }
+
     };
+
 }
 
-module.exports = { login };
+module.exports = {
+
+    login
+
+};
